@@ -2,7 +2,7 @@
   "name": "@react-formgen/core",
   "description": "A headless, type-safe, customizable, and super simple React form generator.",
   "private": false,
-  "version": "0.0.0-alpha.20",
+  "version": "0.0.0-alpha.21",
   "license": "MIT",
   "author": "m6io",
   "repository": {
@@ -44,7 +44,8 @@
     "zustand": "^4.5.2"
   },
   "peerDependencies": {
-    "react": "^18.3.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
