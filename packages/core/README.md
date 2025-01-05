@@ -2,6 +2,7 @@
 
 [![codecov](https://codecov.io/gh/m6io/react-formgen/branch/main/graph/badge.svg)](https://codecov.io/gh/m6io/react-formgen)
 [![npm version](https://badge.fury.io/js/@react-formgen%2Fcore.svg)](https://badge.fury.io/js/@react-formgen%2Fcore)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@react-formgen%2Fcore)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A foundational library designed to facilitate the creation of schema-based form generators. It provides core functionality for state management, form data manipulation, and error handling, allowing developers to build form generators that can be extended for various schema types.

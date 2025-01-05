@@ -3,6 +3,7 @@
 A headless, type-safe, customizable, and super simple React form and data view generator from JSON Schema.
 
 [![npm version](https://badge.fury.io/js/@react-formgen%2Fjson-schema.svg)](https://badge.fury.io/js/@react-formgen%2Fjson-schema)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@react-formgen%2Fjson-schema)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 `@react-formgen/json-schema` transforms a JSON Schema into dynamic forms and data views with built-in validation and error handling. It leverages [Ajv](https://ajv.js.org/) for validation and Zustand for efficient state management.

@@ -154,14 +154,13 @@ export const StringTemplate: React.FC<{
     },
     {
       matcher: (schema: StringSchema) =>
-        schema.format &&
-        ["date", "datetime", "date-time"].includes(schema.format),
+        schema.format && ["date", "date-time"].includes(schema.format),
       render: () => (
         <InputTemplate
           schema={schema}
           path={path}
           htmlType={
-            schema.format === "datetime" ? "datetime-local" : schema.format
+            schema.format === "date-time" ? "datetime-local" : schema.format
           }
         />
       ),

@@ -3,6 +3,7 @@
 A headless, type-safe, customizable, and super simple React form and data view generator. Turn your Yup schemas into forms and data views with ease.
 
 [![npm version](https://badge.fury.io/js/@react-formgen%2Fyup.svg)](https://badge.fury.io/js/@react-formgen%2Fyup)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@react-formgen%2Fyup)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [Docs are boring, take me to the examples!](https://github.com/m6io/react-formgen/tree/main/examples)
