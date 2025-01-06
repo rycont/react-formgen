@@ -20,6 +20,7 @@ import {
   useRenderTemplate,
 } from "..";
 import { generateInitialData, resolveSchema } from "../utils";
+import { useIsRequired } from "../hooks/useIsRequired";
 
 export function useWindowSize(): {
   width: number | null;
@@ -209,6 +210,7 @@ export const InputTemplate: React.FC<{
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
   const size = useWindowSize();
+  const required = useIsRequired(path);
 
   if (readonly) {
     return (
@@ -228,7 +230,10 @@ export const InputTemplate: React.FC<{
       }}
     >
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       <input
         type={htmlType}
@@ -292,6 +297,7 @@ export const MultipleChoiceTemplate: React.FC<{
   const [valueAtPath, setValueAtPath] = useFormDataAtPath(path);
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
+  const required = useIsRequired(path);
 
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -347,7 +353,10 @@ export const MultipleChoiceTemplate: React.FC<{
   return (
     <div style={WrapperStyle}>
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       <div>{opts.map((option, index) => renderOption(option, index))}</div>
       {schema.description && <small>{schema.description}</small>}
@@ -371,6 +380,7 @@ export const TextareaTemplate: React.FC<{
   const [valueAtPath, setValueAtPath] = useFormDataAtPath(path);
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
+  const required = useIsRequired(path);
 
   if (readonly) {
     return (
@@ -389,7 +399,10 @@ export const TextareaTemplate: React.FC<{
   return (
     <div style={WrapperStyle}>
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       <textarea
         value={valueAtPath ?? ""}
@@ -411,7 +424,6 @@ export const TextareaTemplate: React.FC<{
 /**
  * SelectTemplate
  * Renders a select dropdown field for string or number schemas with enum or oneOf options.
- * @param {Object} props - The props for the component.
  * @param {StringSchema|NumberSchema} props.schema - The schema for the select field.
  * @param {string[]} props.path - The path to the select field in the form data.
  * @returns {JSX.Element} - The select field component.
@@ -424,6 +436,7 @@ export const SelectTemplate: React.FC<{
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
   const size = useWindowSize();
+  const required = useIsRequired(path);
 
   if (readonly) {
     const selectedOption =
@@ -452,7 +465,10 @@ export const SelectTemplate: React.FC<{
       }}
     >
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       <select
         value={valueAtPath}
@@ -564,6 +580,7 @@ export const RadioTemplate: React.FC<{
   const [valueAtPath, setValueAtPath] = useFormDataAtPath(path);
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
+  const required = useIsRequired(path);
 
   if (readonly) {
     return (
@@ -578,7 +595,10 @@ export const RadioTemplate: React.FC<{
   return (
     <div style={WrapperStyle}>
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       {schema.oneOf?.map((option) => (
         <label
@@ -620,6 +640,7 @@ export const CheckboxTemplate: React.FC<{
   const [valueAtPath, setValueAtPath] = useFormDataAtPath(path);
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
+  const required = useIsRequired(path);
 
   if (readonly) {
     return (
@@ -642,7 +663,10 @@ export const CheckboxTemplate: React.FC<{
           style={{ marginRight: "8px" }}
         />
         {schema.title && (
-          <label style={{ fontSize: "0.875rem" }}>{schema.title}</label>
+          <label style={{ fontSize: "0.875rem" }}>
+            {schema.title}
+            {required && <span style={{ color: "red" }}>*</span>}
+          </label>
         )}
       </div>
       {schema.description && <small>{schema.description}</small>}
@@ -681,6 +705,7 @@ export const SimpleObjectTemplate: React.FC<{
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
   const RenderTemplate = useRenderTemplate();
+  const required = useIsRequired(path);
 
   if (readonly) {
     return (
@@ -711,7 +736,10 @@ export const SimpleObjectTemplate: React.FC<{
       }}
     >
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       {schema.description && <small>{schema.description}</small>}
       {errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
@@ -817,6 +845,7 @@ export const TupleArrayTemplate: React.FC<{
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
   const RenderTemplate = useRenderTemplate();
+  const required = useIsRequired(path);
 
   return (
     <div
@@ -828,7 +857,10 @@ export const TupleArrayTemplate: React.FC<{
       {valueAtPath ? (
         <>
           {schema.title && (
-            <label style={{ fontWeight: "600" }}>{schema.title}</label>
+            <label style={{ fontWeight: "600" }}>
+              {schema.title}
+              {required && <span style={{ color: "red" }}>*</span>}
+            </label>
           )}
           {schema.description && <small>{schema.description}</small>}
           <div
@@ -898,6 +930,7 @@ export const MultiSelectCheckboxTemplate: React.FC<{
   const [valueAtPath, setValueAtPath] = useFormDataAtPath(path, []);
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
+  const required = useIsRequired(path);
 
   const options = React.useMemo(() => {
     if (typeof schema.items === "object" && !Array.isArray(schema.items)) {
@@ -932,7 +965,10 @@ export const MultiSelectCheckboxTemplate: React.FC<{
   return (
     <div style={WrapperStyle}>
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       {schema.description && <small>{schema.description}</small>}
       <div style={{ marginTop: "8px" }}>
@@ -981,6 +1017,7 @@ export const MultiSelectTemplate: React.FC<{
   const [valueAtPath, setValueAtPath] = useFormDataAtPath(path, []);
   const errorsAtPath = useErrorsAtPath(path);
   const readonly = useFormContext((state: FormState) => state.readonly);
+  const required = useIsRequired(path);
 
   const options = React.useMemo(() => {
     if (typeof schema.items === "object" && !Array.isArray(schema.items)) {
@@ -1015,7 +1052,10 @@ export const MultiSelectTemplate: React.FC<{
   return (
     <div style={WrapperStyle}>
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       {schema.description && <small>{schema.description}</small>}
       <select
@@ -1063,6 +1103,8 @@ export const SimpleArrayTemplate: React.FC<{
     useArrayTemplate(path, () =>
       generateInitialData(schema.items as FormgenJSONSchema7, definitions)
     );
+  const required = useIsRequired(path);
+
   if (readonly) {
     return (
       <ReadonlyComplexTemplate
@@ -1093,7 +1135,10 @@ export const SimpleArrayTemplate: React.FC<{
       }}
     >
       {schema.title && (
-        <label style={{ fontWeight: "600" }}>{schema.title}</label>
+        <label style={{ fontWeight: "600" }}>
+          {schema.title}
+          {required && <span style={{ color: "red" }}>*</span>}
+        </label>
       )}
       {schema.description && <small>{schema.description}</small>}
       {errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
