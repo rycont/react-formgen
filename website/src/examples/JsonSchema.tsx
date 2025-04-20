@@ -1,9 +1,4 @@
-import {
-  Form,
-  FormProvider,
-  BaseFormRoot,
-  useFormContext,
-} from "@react-formgen/json-schema";
+import { Form, FormProvider, useFormContext } from "@react-formgen/json-schema";
 import {
   jsonSchema,
   jsonSchemaBasic,
@@ -11,6 +6,8 @@ import {
 } from "../schemas/jsonSchema";
 import { RenderTemplate } from "../components/templates/json-schema/RenderTemplate.tsx";
 import { SwitchToReadonly } from "../components/SwitchToReadonly.tsx";
+import { BaseFormRoot } from "../components/templates/json-schema/BaseFormRoot.tsx";
+import { BaseTemplates } from "../components/templates/json-schema/templates/index.tsx";
 
 const initialFormData = {
   firstName: "John Doe",
@@ -41,6 +38,8 @@ const JsonSchemaExample = () => {
         display errors if the data is invalid.
       </p>
       <Form
+        templates={BaseTemplates}
+        formRoot={BaseFormRoot}
         schema={jsonSchemaBasic}
         initialData={initialFormData}
         onSubmit={(data) => console.log("JSON Schema:", data)}
@@ -48,7 +47,13 @@ const JsonSchemaExample = () => {
       />
 
       <h2>JSON Schema Form (Readonly)</h2>
-      <Form schema={jsonSchemaBasic} initialData={initialFormData} readonly />
+      <Form
+        templates={BaseTemplates}
+        formRoot={BaseFormRoot}
+        schema={jsonSchemaBasic}
+        initialData={initialFormData}
+        readonly
+      />
     </div>
   );
 };
@@ -77,7 +82,11 @@ const JsonSchemaComplexExample = () => {
         form provider and initial data. The form will validate the data based on
         the schema and display errors if the data is invalid.
       </p>
-      <FormProvider schema={jsonSchema} initialData={initialFormData}>
+      <FormProvider
+        schema={jsonSchema}
+        initialData={initialFormData}
+        templates={BaseTemplates}
+      >
         <SwitchToReadonly contextHook={useFormContext} />
         <BaseFormRoot
           onSubmit={(data) => console.log("JSON Schema:", data)}
@@ -114,14 +123,18 @@ const JsonSchemaCustomRenderTemplateExample = () => {
         manually resolve the nested schemas.
       </p>
       <Form
+        formRoot={BaseFormRoot}
         schema={jsonSchema}
         initialData={initialFormData}
         renderTemplate={RenderTemplate}
+        templates={BaseTemplates}
         onSubmit={(data) => console.log("JSON Schema:", data)}
         onError={(errors, data) => console.error("JSON Schema:", errors, data)}
       ></Form>
       <h2>JSON Schema Form (Readonly)</h2>
       <Form
+        formRoot={BaseFormRoot}
+        templates={BaseTemplates}
         schema={jsonSchema}
         initialData={initialFormData}
         renderTemplate={RenderTemplate}
@@ -154,6 +167,8 @@ const JsonSchemaWithRecursiveRefsExample = () => {
         with unresolvable fields.
       </p>
       <Form
+        formRoot={BaseFormRoot}
+        templates={BaseTemplates}
         schema={jsonSchemaWithRecursiveRefs}
         onSubmit={(data) => console.log("JSON Schema:", data)}
         onError={(errors, data) => console.error("JSON Schema:", errors, data)}
@@ -199,6 +214,8 @@ const JsonSchemaWithDevToolsExample = () => {
         manipulate the form state.
       </p>
       <Form
+        formRoot={BaseFormRoot}
+        templates={BaseTemplates}
         schema={jsonSchemaBasic}
         initialData={initialFormData}
         onSubmit={(data) => console.log("JSON Schema:", data)}
