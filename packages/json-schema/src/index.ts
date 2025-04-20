@@ -6,10 +6,10 @@ import {
 import { ErrorObject } from "ajv";
 import { generateInitialData } from "./utils";
 import {
-  BaseFormRoot,
-  BaseTemplates,
   RenderTemplate as DefaultRenderTemplate,
   FormgenJSONSchema7,
+  FormProviderProps,
+  FormProps,
 } from "./components";
 
 const createInitialData = (schema: JSONSchema7 | FormgenJSONSchema7) =>
@@ -38,20 +38,18 @@ const getErrorsAtPath = (
 };
 
 const {
-  FormProvider,
+  FormProvider: CoreFormProvider,
   useFormContext,
   useFormDataAtPath,
   useErrorsAtPath,
   useArrayTemplate,
   useTemplates,
   useRenderTemplate,
-  Form,
+  Form: CoreForm,
 } = createFormProviderAndHooks<JSONSchema7 | FormgenJSONSchema7, ErrorObject>(
   createInitialData,
   getErrorsAtPath,
-  DefaultRenderTemplate,
-  BaseFormRoot,
-  BaseTemplates
+  DefaultRenderTemplate
 );
 
 export type FormState = CoreFormState<
@@ -59,7 +57,12 @@ export type FormState = CoreFormState<
   ErrorObject
 >;
 
+const FormProvider = CoreFormProvider as React.FC<FormProviderProps>;
+const Form = CoreForm as React.FC<FormProps>;
+
 export {
+  CoreFormProvider,
+  CoreForm,
   FormProvider,
   useFormContext,
   useFormDataAtPath,
