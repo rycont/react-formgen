@@ -258,7 +258,7 @@ export const createFormProviderAndHooks = <S, E>(
     renderTemplate = BaseRenderTemplate,
     enableDevtools = false,
   }) => {
-    const storeRef = React.useRef<FormStore<S, E>>();
+    const storeRef = React.useRef<FormStore<S, E>>(null);
     if (!storeRef.current) {
       storeRef.current = createFormStore<S, E>(
         initialData,
