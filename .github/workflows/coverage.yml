@@ -1,42 +1,56 @@
-name: Coverage
+name: Test Coverage
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 jobs:
   test:
+    name: Test Core Package
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        package: [core]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: npm install
-        working-directory: packages/${{ matrix.package }}
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run tests with coverage
-        run: npm run coverage
-        working-directory: packages/${{ matrix.package }}
+        run: pnpm --filter @react-formgen/core run coverage
 
-      - name: List project directory
-        run: ls -R packages/${{ matrix.package }}
-
-      - name: List coverage directory
-        run: ls -R packages/${{ matrix.package }}/coverage
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          files: packages/${{ matrix.package }}/coverage/lcov.info
+          files: ./packages/core/coverage/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
+          flags: core
           name: codecov-umbrella
+          fail_ci_if_error: false
