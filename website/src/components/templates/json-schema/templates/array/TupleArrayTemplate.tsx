@@ -11,10 +11,6 @@ import {
 	useIsRequired,
 } from '@react-formgen/json-schema'
 
-import { ErrorsList } from '../../common/ErrorsList'
-import { ComplexWrapperStyle } from '../../common/ComplexWrapperStyle'
-import { WrapperStyle } from '../../common/WrapperStyle'
-
 /**
  * TupleArrayTemplate
  * Renders a tuple array where each item has a different schema.
@@ -61,7 +57,10 @@ export const TupleArrayTemplate: React.FC<{
 		<div
 			style={{
 				width: '100%',
-				...WrapperStyle,
+				...{
+					display: 'flex',
+					flexDirection: 'column',
+				},
 			}}
 		>
 			{valueAtPath ? (
@@ -77,10 +76,19 @@ export const TupleArrayTemplate: React.FC<{
 						style={{
 							marginBottom: '16px',
 							width: '100%',
-							...ComplexWrapperStyle,
+							...{
+								display: 'flex',
+								flexWrap: 'wrap',
+								gap: '1rem',
+							},
 						}}
 					>
-						{errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
+						{errorsAtPath &&
+							errorsAtPath.map((error, index) => (
+								<div key={index} style={{ color: 'red', width: '100%' }}>
+									{error.message}
+								</div>
+							))}
 						{Array.isArray(schema.items) &&
 							schema.items.map((itemSchema, index) => (
 								<RenderTemplate

@@ -10,8 +10,6 @@ import {
 } from '@react-formgen/json-schema'
 
 import { ReadonlyPrimitiveTemplate } from '../../common/ReadonlyPrimitiveTemplate'
-import { ErrorsList } from '../../common/ErrorsList'
-import { WrapperStyle } from '../../common/WrapperStyle'
 import { useWindowSize } from '../../hooks/useWindowSize'
 
 /**
@@ -48,7 +46,10 @@ export const InputTemplate: React.FC<{
 		<div
 			style={{
 				width: size.width && size.width > 640 ? 'min-content' : '100%',
-				...WrapperStyle,
+				...{
+					display: 'flex',
+					flexDirection: 'column',
+				},
 			}}
 		>
 			{schema.title && (
@@ -72,7 +73,12 @@ export const InputTemplate: React.FC<{
 				}}
 			/>
 			{schema.description && <small>{schema.description}</small>}
-			{errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
+			{errorsAtPath &&
+				errorsAtPath.map((error, index) => (
+					<div key={index} style={{ color: 'red', width: '100%' }}>
+						{error.message}
+					</div>
+				))}
 		</div>
 	)
 }

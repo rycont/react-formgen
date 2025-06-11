@@ -9,8 +9,6 @@ import {
 } from '@react-formgen/json-schema'
 
 import { ReadonlyPrimitiveTemplate } from '../../common/ReadonlyPrimitiveTemplate'
-import { ErrorsList } from '../../common/ErrorsList'
-import { WrapperStyle } from '../../common/WrapperStyle'
 
 /**
  * CheckboxTemplate
@@ -40,7 +38,12 @@ export const CheckboxTemplate: React.FC<{
 	}
 
 	return (
-		<div style={WrapperStyle}>
+		<div
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+			}}
+		>
 			<div style={{ display: 'flex', alignItems: 'center' }}>
 				<input
 					type="checkbox"
@@ -57,7 +60,12 @@ export const CheckboxTemplate: React.FC<{
 				)}
 			</div>
 			{schema.description && <small>{schema.description}</small>}
-			{errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
+			{errorsAtPath &&
+				errorsAtPath.map((error, index) => (
+					<div key={index} style={{ color: 'red', width: '100%' }}>
+						{error.message}
+					</div>
+				))}
 		</div>
 	)
 }

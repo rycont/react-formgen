@@ -9,9 +9,6 @@ import {
 	useIsRequired,
 } from '@react-formgen/json-schema'
 
-import { ErrorsList } from '../../common/ErrorsList'
-import { WrapperStyle } from '../../common/WrapperStyle'
-
 /**
  * MultiSelectCheckboxTemplate
  * Renders a set of checkboxes for multi-select arrays with unique items.
@@ -60,7 +57,12 @@ export const MultiSelectCheckboxTemplate: React.FC<{
 	}
 
 	return (
-		<div style={WrapperStyle}>
+		<div
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+			}}
+		>
 			{schema.title && (
 				<label style={{ fontWeight: '600' }}>
 					{schema.title}
@@ -95,7 +97,12 @@ export const MultiSelectCheckboxTemplate: React.FC<{
 						</div>
 					))}
 			</div>
-			{errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
+			{errorsAtPath &&
+				errorsAtPath.map((error, index) => (
+					<div key={index} style={{ color: 'red', width: '100%' }}>
+						{error.message}
+					</div>
+				))}
 		</div>
 	)
 }

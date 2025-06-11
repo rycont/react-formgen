@@ -9,8 +9,6 @@ import {
 } from '@react-formgen/json-schema'
 
 import { ReadonlyPrimitiveTemplate } from '../../common/ReadonlyPrimitiveTemplate'
-import { ErrorsList } from '../../common/ErrorsList'
-import { WrapperStyle } from '../../common/WrapperStyle'
 
 // Memoized MultipleChoiceOptionTemplate to prevent re-renders unless its props change
 const MultipleChoiceOptionTemplate: React.FC<{
@@ -108,7 +106,12 @@ export const MultipleChoiceTemplate: React.FC<{
 	}
 
 	return (
-		<div style={WrapperStyle}>
+		<div
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+			}}
+		>
 			{schema.title && (
 				<label style={{ fontWeight: '600' }}>
 					{schema.title}
@@ -117,7 +120,12 @@ export const MultipleChoiceTemplate: React.FC<{
 			)}
 			<div>{opts.map((option, index) => renderOption(option, index))}</div>
 			{schema.description && <small>{schema.description}</small>}
-			{errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
+			{errorsAtPath &&
+				errorsAtPath.map((error, index) => (
+					<div key={index} style={{ color: 'red', width: '100%' }}>
+						{error.message}
+					</div>
+				))}
 		</div>
 	)
 }

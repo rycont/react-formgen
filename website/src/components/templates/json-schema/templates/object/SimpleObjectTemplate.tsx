@@ -10,9 +10,6 @@ import {
 } from '@react-formgen/json-schema'
 
 import { ReadonlyComplexTemplate } from '../../common/ReadonlyComplexTemplate'
-import { ErrorsList } from '../../common/ErrorsList'
-import { ComplexWrapperStyle } from '../../common/ComplexWrapperStyle'
-import { WrapperStyle } from '../../common/WrapperStyle'
 
 /**
  * SimpleObjectTemplate
@@ -56,7 +53,10 @@ export const SimpleObjectTemplate: React.FC<{
 		<div
 			style={{
 				width: '100%',
-				...WrapperStyle,
+				...{
+					display: 'flex',
+					flexDirection: 'column',
+				},
 			}}
 		>
 			{schema.title && (
@@ -66,12 +66,21 @@ export const SimpleObjectTemplate: React.FC<{
 				</label>
 			)}
 			{schema.description && <small>{schema.description}</small>}
-			{errorsAtPath && <ErrorsList errorsAtPath={errorsAtPath} />}
+			{errorsAtPath &&
+				errorsAtPath.map((error, index) => (
+					<div key={index} style={{ color: 'red', width: '100%' }}>
+						{error.message}
+					</div>
+				))}
 			<div
 				style={{
 					border: '0.125rem solid',
 					padding: '1rem',
-					...ComplexWrapperStyle,
+					...{
+						display: 'flex',
+						flexWrap: 'wrap',
+						gap: '1rem',
+					},
 				}}
 			>
 				{schema.properties &&

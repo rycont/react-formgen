@@ -1,5 +1,4 @@
 import React from 'react'
-import { WrapperStyle } from './WrapperStyle'
 
 export const ReadonlyPrimitiveTemplate: React.FC<{
 	title?: string
@@ -10,7 +9,10 @@ export const ReadonlyPrimitiveTemplate: React.FC<{
 		<div
 			style={{
 				width: '100%',
-				...WrapperStyle,
+				...{
+					display: 'flex',
+					flexDirection: 'column',
+				},
 			}}
 		>
 			{title && <label style={{ fontWeight: '600' }}>{title}</label>}
