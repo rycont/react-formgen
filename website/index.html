@@ -2,9 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/m6.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>@react-formgen</title>
+    <script>
+      // Apply theme immediately to prevent flash
+      ;(function (storageKey = 'vite-ui-theme') {
+        const stored = localStorage.getItem(storageKey)
+        const prefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)',
+        ).matches
+        const isDark = stored ? stored === 'true' : prefersDark
+
+        // Apply theme class immediately if needed
+        if (isDark) document.documentElement.classList.add('dark')
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

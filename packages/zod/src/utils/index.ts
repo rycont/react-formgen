@@ -1,4 +1,16 @@
 import { generateInitialData } from "./generateInitialData";
-import { resolveSchema, mapToPrimaryType } from "./resolveSchema";
+import { getDefaultValue } from "./getDefaultValue";
+import { isOptional } from "./isOptional";
+import { isRequired } from "./isRequired";
+import { hasMeta, getMetadata } from "./metadata";
+import { unwrapSchema } from "./unwrapSchema";
 
-export { generateInitialData, resolveSchema, mapToPrimaryType };
+export {
+  generateInitialData,
+  getDefaultValue,
+  isOptional,
+  isRequired,
+  hasMeta,
+  getMetadata,
+  unwrapSchema,
+};
