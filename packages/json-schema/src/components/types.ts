@@ -76,16 +76,18 @@ export interface UISchema {
  * Represents an extended JSONSchema7 with additional properties for customizing forms.
  * This adds form-specific extensions to the standard JSON Schema.
  *
- * @extends {Omit<JSONSchema7, "properties" | "definitions">}
+ * @extends {Omit<JSONSchema7, "properties" | "definitions" | "items">}
  * @property {UISchema} [uiSchema] - UI-specific configuration
  * @property {Record<string, FormgenJSONSchema7>} [properties] - Object properties
  * @property {Record<string, FormgenJSONSchema7>} [definitions] - Schema definitions
+ * @property {FormgenJSONSchema7 | FormgenJSONSchema7[]} [items] - Array items schema with uiSchema support
  */
 export interface FormgenJSONSchema7
-  extends Omit<JSONSchema7, "properties" | "definitions"> {
+  extends Omit<JSONSchema7, "properties" | "definitions" | "items"> {
   uiSchema?: UISchema;
   properties?: Record<string, FormgenJSONSchema7>;
   definitions?: Record<string, FormgenJSONSchema7>;
+  items?: FormgenJSONSchema7 | FormgenJSONSchema7[];
 }
 
 /**

@@ -1,58 +1,65 @@
-import { z } from "zod";
 import {
   createFormProviderAndHooks,
   FormState as CoreFormState,
 } from "@react-formgen/core";
+
+import type * as z from "zod/v4/core";
 import { generateInitialData } from "./utils";
 import {
-  BaseFormRoot,
-  BaseTemplates,
   RenderTemplate as DefaultRenderTemplate,
+  FormProps,
+  FormProviderProps,
 } from "./components";
 
-const createInitialData = (schema: z.ZodTypeAny) => generateInitialData(schema);
+const createInitialData = (schema: z.$ZodType) => generateInitialData(schema);
 
-const getErrorsAtPath = (
-  errors: z.ZodIssue[],
+/**
+ * Extracts validation errors at a specific path from Zod issues
+ * @param issues - Array of Zod issues (individual validation errors)
+ * @param path - The path to check for errors
+ * @returns Array of issues at the specified path, or undefined if none found
+ */
+const getIssuesAtPath = (
+  issues: z.$ZodIssue[],
   path: string[]
-): z.ZodIssue[] | undefined => {
-  const errorMap: { [key: string]: z.ZodIssue[] } = {};
+): z.$ZodIssue[] | undefined => {
+  // Filter issues that match the specified path
+  const pathStr = path.join(".");
 
-  // Normalize the error paths to handle array indices
-  const normalizePath = (path: string): string => {
-    return path.replace(/\[(\d+)\]/g, ".$1");
-  };
-
-  errors.forEach((error) => {
-    const fullPath = normalizePath(error.path.join("."));
-    errorMap[fullPath] = errorMap[fullPath] || [];
-    errorMap[fullPath].push(error);
+  const matchingIssues = issues.filter((issue) => {
+    const issuePath = issue.path.map(String).join(".");
+    return issuePath === pathStr;
   });
 
-  const fullPath = path.join(".");
-  return errorMap[fullPath] || [];
+  return matchingIssues.length > 0 ? matchingIssues : undefined;
 };
 
+/**
+ * Create the form provider and hooks using the core factory
+ */
 const {
-  FormProvider,
+  FormProvider: CoreFormProvider,
   useFormContext,
   useFormDataAtPath,
   useErrorsAtPath,
   useArrayTemplate,
   useTemplates,
   useRenderTemplate,
-  Form,
-} = createFormProviderAndHooks<z.ZodTypeAny, z.ZodIssue>(
+  Form: CoreForm,
+} = createFormProviderAndHooks<z.$ZodType, z.$ZodIssue>(
   createInitialData,
-  getErrorsAtPath,
-  DefaultRenderTemplate,
-  BaseFormRoot,
-  BaseTemplates
+  getIssuesAtPath,
+  DefaultRenderTemplate
 );
 
-export type FormState = CoreFormState<z.ZodTypeAny, z.ZodIssue>;
+export type FormState = CoreFormState<z.$ZodType, z.$ZodIssue>;
+
+const FormProvider = CoreFormProvider as React.FC<FormProviderProps>;
+const Form = CoreForm as React.FC<FormProps>;
 
 export {
+  CoreFormProvider,
+  CoreForm,
   FormProvider,
   useFormContext,
   useFormDataAtPath,

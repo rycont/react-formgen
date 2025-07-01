@@ -2,5 +2,6 @@
   "singleQuote": true,
   "semi": false,
   "trailingComma": "all",
-  "useTabs": true
+  "tailwindStylesheet": "./src/index.css",
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
