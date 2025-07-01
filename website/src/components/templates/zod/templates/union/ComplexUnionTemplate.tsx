@@ -1,5 +1,5 @@
 import React from 'react'
-import type * as z from 'zod/v4/core'
+import * as z from 'zod/v4/core'
 import {
   useFormDataAtPath,
   useErrorsAtPath,
@@ -45,14 +45,10 @@ export const ComplexUnionTemplate: React.FC<{
   React.useEffect(() => {
     if (valueAtPath !== undefined && valueAtPath !== null) {
       for (let i = 0; i < options.length; i++) {
-        try {
-          const result = (options[i] as z.$ZodType).safeParse(valueAtPath)
-          if (result.success) {
-            setSelectedOptionIndex(i)
-            break
-          }
-        } catch {
-          // Continue to next option
+        const result = z.safeParse(options[i] as z.$ZodType, valueAtPath)
+        if (result.success) {
+          setSelectedOptionIndex(i)
+          break
         }
       }
     }
