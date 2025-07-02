@@ -31,11 +31,22 @@ export const SimpleTupleTemplate: React.FC<{
   const readonly = useFormContext((state: FormState) => state.readonly)
   const RenderTemplate = useRenderTemplate()
   const required = isRequired(schema)
-  const metadata = getMetadata(schema)
+
+  const metadata = React.useMemo(() => {
+    return getMetadata(schema)
+  }, [schema])
 
   // Extract tuple items
   const unwrappedSchema = unwrapSchema(schema) as z.$ZodTuple
   const items = unwrappedSchema._zod.def.items
+
+  const gridCols = React.useMemo(() => {
+    const cols = metadata.uiSchema?.props?.columns
+    if (typeof cols === 'number' && cols > 0) {
+      return cols
+    }
+    return 1
+  }, [metadata])
 
   // For optional tuples that are undefined
   if (!required && valueAtPath === undefined && !readonly) {
@@ -88,9 +99,6 @@ export const SimpleTupleTemplate: React.FC<{
           {valueAtPath !== undefined ? (
             items.map((itemSchema: z.$ZodType, index: number) => (
               <div key={index} className="space-y-1">
-                {/* <div className="text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                  Item {index + 1}
-                </div> */}
                 <RenderTemplate
                   schema={itemSchema}
                   path={[...path, index.toString()]}
@@ -153,18 +161,9 @@ export const SimpleTupleTemplate: React.FC<{
               : 'border-gray-200 bg-gray-50/30 dark:border-gray-700 dark:bg-gray-800/30'
           } `}
         >
-          <div
-            className={`grid gap-4 ${(() => {
-              // You can add uiSchema support for columns later
-              // For now, default to 1 column for tuple layouts
-              return 'grid-cols-1'
-            })()}`}
-          >
+          <div className={`grid gap-4 grid-cols-${gridCols}`}>
             {items.map((itemSchema: z.$ZodType, index: number) => (
               <div key={index} className="space-y-2">
-                {/* <div className="text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                  Item {index + 1}
-                </div> */}
                 <RenderTemplate
                   schema={itemSchema}
                   path={[...path, index.toString()]}

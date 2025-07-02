@@ -118,54 +118,62 @@ export const SimpleArrayTemplate: React.FC<{
           ))}
 
         <div
-          className={`space-y-4 rounded-lg border-2 p-4 ${
+          className={`space-y-4 rounded-lg border-2 border-dashed p-4 ${
             errorsAtPath && errorsAtPath.length > 0
-              ? 'border-red-200 bg-red-50/30 dark:border-red-700 dark:bg-red-900/10'
-              : 'border-gray-200 bg-gray-50/30 dark:border-gray-700 dark:bg-gray-800/30'
+              ? 'border-red-300 bg-red-50/30 dark:border-red-600 dark:bg-red-900/10'
+              : 'border-gray-300 bg-gray-50/30 dark:border-gray-600 dark:bg-gray-800/30'
           } `}
         >
-          {Array.isArray(valueAtPath) && valueAtPath.length > 0 ? (
-            valueAtPath.map((_, index) => (
+          {Array.isArray(valueAtPath) &&
+            valueAtPath.map((_, index: number) => (
               <div
                 key={index}
-                className="flex items-start space-x-3 rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-800"
+                className="flex flex-col space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
               >
-                <div className="flex-1">
-                  <RenderTemplate
-                    schema={elementSchema}
-                    path={[...path, index.toString()]}
-                  />
-                </div>
-                <div className="flex flex-col space-y-1">
+                <RenderTemplate
+                  schema={elementSchema}
+                  path={[...path, index.toString()]}
+                />
+
+                <div className="flex flex-wrap gap-2 border-t border-dashed border-gray-200 pt-3 dark:border-gray-600">
                   <button
                     type="button"
                     onClick={() => moveItem(index, 'up')}
                     disabled={index === 0}
-                    className="rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                    className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-200 ease-in-out ${
+                      index === 0
+                        ? 'cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-500/20 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50'
+                    } `}
                   >
-                    ↑
+                    Move Up
                   </button>
                   <button
                     type="button"
                     onClick={() => moveItem(index, 'down')}
                     disabled={index === valueAtPath.length - 1}
-                    className="rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                    className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-200 ease-in-out ${
+                      index === valueAtPath.length - 1
+                        ? 'cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200 focus:ring-2 focus:ring-blue-500/20 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50'
+                    } `}
                   >
-                    ↓
+                    Move Down
                   </button>
                   <button
                     type="button"
                     onClick={() => removeItem(index)}
-                    className="rounded border border-red-300 bg-red-50 px-2 py-1 text-xs text-red-700 hover:bg-red-100 dark:border-red-600 dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50"
+                    className="rounded-md bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 transition-all duration-200 ease-in-out hover:bg-red-200 focus:ring-2 focus:ring-red-500/20 dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50"
                   >
-                    ✕
+                    Remove
                   </button>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="py-4 text-center text-gray-500 italic dark:text-gray-400">
-              No items added yet
+            ))}
+
+          {(!Array.isArray(valueAtPath) || valueAtPath.length === 0) && (
+            <div className="py-4 text-center text-sm text-gray-500 italic dark:text-gray-400">
+              No items available
             </div>
           )}
         </div>
