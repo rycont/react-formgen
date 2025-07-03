@@ -101,9 +101,6 @@ export const TupleArrayTemplate: React.FC<{
                 {Array.isArray(schema.items) &&
                   schema.items.map((itemSchema, index) => (
                     <div key={index} className="space-y-2">
-                      {/* <div className="text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                        Item {index + 1}
-                      </div> */}
                       <RenderTemplate
                         schema={itemSchema as FormgenJSONSchema7}
                         path={[...path, index.toString()]}

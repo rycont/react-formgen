@@ -396,7 +396,16 @@ export const zodSchema = z
     }),
 
     coordinates: z
-      .tuple([z.number(), z.number()])
+      .tuple([
+        z.number().meta({
+          title: 'Latitude',
+          description: 'Enter coordinate as decimal degrees (°)',
+        }),
+        z.number().meta({
+          title: 'Longitude',
+          description: 'Enter coordinate as decimal degrees (°)',
+        }),
+      ])
       .optional()
       .meta({
         title: 'GPS Coordinates',
